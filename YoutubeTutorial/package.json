@@ -1,0 +1,21 @@
+{
+  "name": "youtubetutorial",
+  "version": "1.0.0",
+  "description": "",
+  "main": "nodemon server.js",
+  "start": "nodemon server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server": "^2.6.7",
+    "apollo-server-express": "^2.7.0-alpha.3",
+    "express": "^4.17.1",
+    "express-graphql": "^0.8.0",
+    "graphql": "^14.4.1",
+    "nodemon": "^1.19.1",
+    "uuid": "^3.3.2"
+  }
+}

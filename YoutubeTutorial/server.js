@@ -1,71 +1,22 @@
 const express = require("express");
-const { ApolloServer, gql } = require("apollo-server-express");
-const { getDish, getDishes, getComments, getComment, addComment } = require("./Functions");
+const { ApolloServer } = require("apollo-server-express");
 const { dishes, comments } = require("./DataStore");
+const { schema } = require("./Schema");
+const { resolvers } = require("./Resolvers");
+const mongoose = require("mongoose");
+mongoose.Promise = global.Promise;
 
 // GraphQL Schema
 const app = express();
-
-const schema = gql`
-  type Query {
-    message: String
-    dish(id: Int!): Dish
-    dishes(name: String): [Dish]
-    comment(id: Int!): Comment
-    comments(id: Int): [Comment]
-  }
-  type Mutation {
-    addComment(dishId:Int!,rating:Int!, comment:String!, author:String!):Comment!
-  }
-  type Dish {
-    id: Int!
-    name: String
-    category: String
-    label: String
-    price: String
-    description: String
-    comments: [Comment!]
-  }
-  type Comment {
-    id: Int
-    dishId: Int
-    rating: Int
-    comment: String
-    author: String
-    date: String
-  }
-`;
-
-const resolvers = {
-  Query: {
-    message: () => "Hello World!!",
-    dish: getDish,
-    dishes: getDishes,
-    comments: getComments,
-    comment: getComment
-  },
-  Mutation: {
-    addComment: addComment
-  },
-  Dish: {
-    name: (parent, args, { comments }) => {
-      return "Cool Name";
-    },
-    comments: (parent, args, { comments }) => {
-      let temp = comments.filter(comment => {
-        return comment.dishId === parent.id;
-      });
-      console.log(typeof(temp))
-      return temp;
-    }
-  }
-};
+const db = "mongodb://localhost:27017/Restaurants";
+mongoose.connect(db);
+const Dishes = mongoose.model("Dish", {});
 
 const server = new ApolloServer({
   typeDefs: schema,
   resolvers,
   context: {
-    dishes: dishes,
+    dishes: Dishes,
     comments: comments
   }
 });

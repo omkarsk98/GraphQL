@@ -21,19 +21,29 @@ const addComment = (
   { comments }
 ) => {
   const newComment = {
-    id: parseInt(uuidv4()),
+    id: uuidv4(),
     dishId: dishId,
     rating: rating,
     comment: comment,
     author: author,
     date: new Date()
   };
-  // comments.push(newComment)
+  comments.push(newComment);
   return newComment;
+};
+
+const deleteComment = (parent, { id }, { comments }) => {
+  let newComments = comments.filter(comment => {
+    return comment.id !== id;
+  });
+  if (comments.length === newComments.length) return false;
+  comments = newComments;
+  return true;
 };
 
 module.exports = {
   getComment,
   getComments,
-  addComment
+  addComment,
+  deleteComment
 };

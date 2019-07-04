@@ -1,23 +1,21 @@
 const express = require("express");
 const { ApolloServer } = require("apollo-server-express");
-const { dishes, comments } = require("./DataStore");
 const { schema } = require("./Schema");
 const { resolvers } = require("./Resolvers");
+const { Dishes } = require("./Models/Dish");
+const { Comments } = require("./Models/Comments");
 const mongoose = require("mongoose");
-mongoose.Promise = global.Promise;
 
-// GraphQL Schema
 const app = express();
 const db = "mongodb://localhost:27017/Restaurants";
 mongoose.connect(db);
-const Dishes = mongoose.model("Dish", {});
 
 const server = new ApolloServer({
   typeDefs: schema,
   resolvers,
   context: {
     dishes: Dishes,
-    comments: comments
+    comments: Comments
   }
 });
 

@@ -3,7 +3,7 @@ const { gql } = require("apollo-server-express");
 const dishSchema = gql`
   extend type Query {
     dish(id: Int!): Dish
-    dishes(name: String): [Dish]
+    dishes(name: String, id:Int): [Dish]
   }
   type Dish {
     id: Int!

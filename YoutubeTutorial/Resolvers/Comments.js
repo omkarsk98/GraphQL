@@ -1,21 +1,24 @@
+const uuidv4 = require("uuid");
+const { Comments } = require("../Models/Comments");
+
 const commentsResolver = {
   Query: {
-    comments: (parent, args, { comments }) => {
+    comments: async (parent, args, { comments }) => {
       if (args.id) {
         let id = args.id;
-        return comments.filter(comment => {
-          return comment.id === id;
-        });
-      } else return comments;
+        return await comments.find({ id: id });
+      } else return await comments.find({});
     },
-    comment: (parent, { id }, { comments }) => {
-      return comments.filter(comment => {
-        return comment.id === id;
-      })[0];
+    comment: async (parent, { id }, { comments }) => {
+      return (await comments.find({ id: id }))[0];
     }
   },
   Mutation: {
-    addComment: (parent, { dishId, rating, comment, author }, { comments }) => {
+    addComment: async (
+      parent,
+      { dishId, rating, comment, author },
+      { comments }
+    ) => {
       const newComment = {
         id: uuidv4(),
         dishId: dishId,
@@ -24,8 +27,18 @@ const commentsResolver = {
         author: author,
         date: new Date()
       };
-      comments.push(newComment);
-      return newComment;
+      let commentObj = new Comments(newComment);
+      return await commentObj
+        .save()
+        .then(result => {
+          return true;
+          return result;
+        })
+        .catch(err => {
+          return false;
+          return err;
+        });
+      
     },
     deleteComment: (parent, { id }, { comments }) => {
       let newComments = comments.filter(comment => {

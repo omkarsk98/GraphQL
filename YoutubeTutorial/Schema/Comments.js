@@ -11,7 +11,7 @@ const commentsSchema = gql`
       rating: Int!
       comment: String!
       author: String!
-    ): Comment!
+    ): Boolean!
     deleteComment(id: String!): Boolean!
   }
   type Comment {

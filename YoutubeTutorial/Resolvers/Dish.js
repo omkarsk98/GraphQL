@@ -1,26 +1,22 @@
 const dishResolver = {
   Query: {
-    dish: (parent, args, { dishes }) => {
+    dish: async (parent, args, { dishes }) => {
       let id = args.id;
-      return dishes.filter(dish => {
-        return dish.id === id;
-      })[0];
+      return (await dishes.find({ id: id }))[0];
     },
     dishes: async (parent, args, { dishes }) => {
-      return await dishes.find({});
-      // if (args.name) {
-      //   let name = args.name;
-      //   return dishes.filter(dish => {
-      //     return dish.name === name;
-      //   });
-      // } else return dishes;
+      if (args.id) {
+        return await dishes.find({ id: args.id });
+      }
+      if (args.name) {
+        let name = args.name;
+        return await dishes.find({ name: name });
+      } else return await dishes.find({});
     }
   },
   Dish: {
-    comments: (parent, args, { comments }) => {
-      return comments.filter(comment => {
-        return comment.dishId === parent.id;
-      });
+    comments: async (parent, args, { comments }) => {
+      return await comments.find({ dishId: parent.id });
     }
   }
 };

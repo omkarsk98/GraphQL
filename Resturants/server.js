@@ -7,7 +7,7 @@ const { Comments } = require("./Models/Comments");
 const mongoose = require("mongoose");
 
 const app = express();
-const db = "mongodb://localhost:27017/Restaurants";
+const db = "mongodb://localhost:27017/Restaurant";
 mongoose.connect(db);
 
 const server = new ApolloServer({
@@ -21,7 +21,7 @@ const server = new ApolloServer({
 
 server.applyMiddleware({ app, path: "/graphql" });
 
-let port = 3000;
+let port = 3300;
 app.listen({ port: port }, () => {
   console.log(`Apollo Server on http://localhost:${port}/graphql`);
 });

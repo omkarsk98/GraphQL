@@ -10,7 +10,7 @@
   "author": "Omkar Kulkarni",
   "license": "ISC",
   "dependencies": {
-    "apollo-server": "^2.4.8",
+    "apollo-server": "^2.14.2",
     "apollo-server-express": "^2.4.8",
     "cors": "^2.8.5",
     "express": "^4.16.4",
